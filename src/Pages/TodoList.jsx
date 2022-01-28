@@ -1,11 +1,15 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { Table, Space } from 'antd';
 import { EditTwoTone, DeleteTwoTone } from '@ant-design/icons';
+import { Link, useNavigate } from 'react-router-dom';
 import Button from '../Components/Button';
-import { Link } from 'react-router-dom';
+import useTodoList from '../hooks/useTodoList';
 
 function TodoList() {
-  const columns = [
+  const navigate = useNavigate();
+
+  const { todoList, deleteItemInTodoList } = useTodoList();
+  const columns = useMemo(() => [
     {
       title: 'Text',
       dataIndex: 'text',
@@ -22,33 +26,13 @@ function TodoList() {
       key: 'action',
       render: (text, record) => (
         <Space>
-          <Button type='secondary' icon={<EditTwoTone />} />
-          <Button type='secondary' icon={<DeleteTwoTone twoToneColor='#ff4d4f' />} />
+          <Button type='secondary' icon={<EditTwoTone />} onClick={() => navigate(`/update-todo/${record.key}`)} />
+          <Button type='secondary' icon={<DeleteTwoTone twoToneColor='#ff4d4f' />} onClick={() => deleteItemInTodoList(record.key)} />
         </Space>
       ),
     }
-  ];
+  ], [todoList]);
 
-  const data = [
-    {
-      key: '1',
-      id: '1',
-      text: 'Todo Item 1',
-      date: new Date().toDateString()
-    },
-    {
-      key: '2',
-      id: '2',
-      text: 'Todo Item 2',
-      date: new Date().toDateString()
-    },
-    {
-      key: '3',
-      id: '3',
-      text: 'Todo Item 3',
-      date: new Date().toDateString()
-    },
-  ];
   return (
     <div className='flex flex-col'>
       <div className='flex justify-between'>
@@ -57,7 +41,7 @@ function TodoList() {
           <Button type='primary' value='Add Todo Item' />
         </Link>
       </div>
-      <Table columns={columns} dataSource={data} pagination={false} />
+      <Table columns={columns} dataSource={todoList} pagination={false} />
     </div>
   );
 }

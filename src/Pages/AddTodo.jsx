@@ -1,16 +1,29 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import useTodoList from '../hooks/useTodoList';
 import Button from '../Components/Button';
 import Input from '../Components/Input';
 
 function AddTodo() {
+  const navigate = useNavigate();
+  
+  const { todoList, addItemInTodoList } = useTodoList();
   const [todoText, setTodoText] = useState('');
 
   const handleTodoTextChange = (e) => {
     setTodoText(e.target.value);
   };
 
-  const handleAddItemClick = () => {
-    
+  const handleAddItemClick = async () => {
+    let data = {
+      key: todoList.length + 1,
+      text: todoText,
+      date: new Date().toLocaleString()
+    };
+    const result = await addItemInTodoList(data);
+    if (result) {
+      navigate('/');
+    }
   };
 
   return (

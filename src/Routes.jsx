@@ -9,7 +9,7 @@ function AppRoutes() {
   return (
     <Routes>
       <Route path="/add-todo" element={<AddTodo />} />
-      <Route path="/todo/:id" element={<EditTodo />} />
+      <Route path="/update-todo/:todoItemKey" element={<EditTodo />} />
       <Route path="/" element={<TodoList />} />
     </Routes>
   );
