@@ -11,6 +11,10 @@ function AddTodo() {
   const [todoText, setTodoText] = useState('');
 
   const handleTodoTextChange = (e) => {
+    if(e.key === 'Enter') {
+      handleAddItemClick();
+      return;
+    };
     setTodoText(e.target.value);
   };
 
@@ -30,7 +34,7 @@ function AddTodo() {
     <div className='flex flex-col w-25'>
       <h2>Add Todo Item</h2>
       <div className='flex'>
-        <Input placeholder='Write something' value={todoText} onChange={handleTodoTextChange} />
+        <Input placeholder='Write something' value={todoText} onChange={handleTodoTextChange} onKeyPress={handleTodoTextChange} />
         <Button type='primary' value='Add' onClick={handleAddItemClick} />
       </div>
     </div>
